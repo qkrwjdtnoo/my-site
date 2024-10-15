@@ -9,18 +9,23 @@
         function checkNaverApp() {
             const userAgent = navigator.userAgent;
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
+
             const contentElement = document.getElementById('content');
             const copyButton = document.getElementById('copyBtn');
-            
-            // URL의 쿼리 파라미터에서 제품 번호를 찾기 위한 함수
-            const urlParams = new URLSearchParams(window.location.search);
-            const productNumber = urlParams.get('product'); // URL에 ?product=5811777609 형태로 전달되는지 확인
+            const referrer = document.referrer; // 직전 링크 가져오기
 
-            // 특정 제품 번호와 네이버 앱 여부를 확인
-            const validProductNumber = productNumber === '5811777609';
+            // URL의 쿼리 파라미터에서 제품 번호를 가져오기
+            const urlParams = new URLSearchParams(window.location.search);
+            const productNumberFromUrl = urlParams.get('product'); // URL의 쿼리에서 번호 추출
+
+            // Referrer에 제품 번호가 포함된 경우 확인
+            const validProductNumberInReferrer = /5811777609/.test(referrer);
+
+            // URL의 쿼리나 Referrer 중 하나에 유효한 제품 번호가 있는지 확인
+            const validProductNumber = productNumberFromUrl === '5811777609' || validProductNumberInReferrer;
 
             if (naverApp && validProductNumber) {
-                // 네이버 앱 + 올바른 번호가 있을 때만 번호 표시
+                // 네이버 앱 + 유효한 번호가 있을 때 번호 표시
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
                 messageElement.textContent = "84151";
@@ -28,7 +33,7 @@
 
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else if (!validProductNumber) {
-                // 올바른 제품 번호가 없을 때 경고 메시지 표시
+                // 유효한 번호가 없을 때 경고 메시지 표시
                 contentElement.textContent = "네이버 쇼핑을 타고 들어와 주세요.";
                 copyButton.style.display = "none"; // 복사 버튼 숨김
             } else {
