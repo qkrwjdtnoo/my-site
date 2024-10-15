@@ -11,19 +11,57 @@
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
 
             const messageElement = document.getElementById('message');
-            
+            const copyButton = document.getElementById('copyBtn');
+
             if (naverApp) {
-                messageElement.textContent = "841511"; // 네이버 앱일 때 표시할 텍스트
+                messageElement.textContent = "84151"; // 네이버 앱일 때 표시할 텍스트
+                copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else {
                 messageElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다"; // 네이버 앱이 아닐 때
+                copyButton.style.display = "none"; // 복사 버튼 숨김
             }
+        }
+
+        // 클립보드에 번호 복사 함수
+        function copyToClipboard() {
+            const message = document.getElementById('message').textContent;
+            navigator.clipboard.writeText(message).then(() => {
+                alert("번호가 복사되었습니다: " + message);
+            }).catch(err => {
+                alert("복사에 실패했습니다: " + err);
+            });
         }
 
         // 페이지가 로드될 때 함수 실행
         window.onload = checkNaverApp;
     </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-size: 24px;
+            flex-direction: column;
+        }
+        #copyBtn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #copyBtn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-size: 24px;">
+<body>
     <div id="message"></div>
+    <button id="copyBtn" onclick="copyToClipboard()" style="display: none;">복사</button>
 </body>
 </html>
