@@ -10,15 +10,20 @@
             const userAgent = navigator.userAgent;
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
 
-            const messageElement = document.getElementById('message');
+            const contentElement = document.getElementById('content');
             const copyButton = document.getElementById('copyBtn');
             const resultElement = document.getElementById('result');
 
             if (naverApp) {
-                messageElement.textContent = "841513"; // 네이버 앱일 때 표시할 텍스트
+                // 네이버 앱일 때만 번호를 동적으로 추가
+                const messageElement = document.createElement('div');
+                messageElement.id = 'message';
+                messageElement.textContent = "841515";
+                contentElement.appendChild(messageElement);
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else {
-                messageElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다"; // 네이버 앱이 아닐 때
+                // 네이버 앱이 아닐 때는 안내 메시지만 표시
+                contentElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다";
                 copyButton.style.display = "none"; // 복사 버튼 숨김
             }
         }
@@ -27,7 +32,6 @@
         function copyToClipboard() {
             const message = document.getElementById('message').textContent;
             navigator.clipboard.writeText(message).then(() => {
-                // alert 대신 화면에 복사 완료 메시지 표시
                 const resultElement = document.getElementById('result');
                 resultElement.textContent = `번호가 복사되었습니다: ${message}`;
                 resultElement.style.display = "block";
@@ -71,7 +75,7 @@
     </style>
 </head>
 <body>
-    <div id="message"></div>
+    <div id="content"></div> <!-- 동적으로 콘텐츠가 추가될 요소 -->
     <button id="copyBtn" onclick="copyToClipboard()" style="display: none;">복사</button>
     <div id="result"></div> <!-- 복사 결과를 표시할 요소 -->
 </body>
