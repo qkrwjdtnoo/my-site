@@ -9,21 +9,28 @@
         function checkNaverApp() {
             const userAgent = navigator.userAgent;
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
-
             const contentElement = document.getElementById('content');
             const copyButton = document.getElementById('copyBtn');
-            const resultElement = document.getElementById('result');
+            const referrer = document.referrer; // 직전 링크 가져오기
 
-            if (naverApp) {
-                // 네이버 앱일 때만 번호를 동적으로 추가
+            // 네이버 쇼핑 URL에 특정 번호가 포함되었는지 확인
+            const validProductNumber = /5811777609/.test(referrer);
+
+            if (naverApp && validProductNumber) {
+                // 네이버 앱 + 올바른 번호가 포함된 링크일 때 번호 표시
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
-                messageElement.textContent = "841515";
+                messageElement.textContent = "84156";
                 contentElement.appendChild(messageElement);
+
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
+            } else if (!validProductNumber) {
+                // 링크에 번호가 없을 경우 경고 메시지 표시
+                contentElement.textContent = "네이버 쇼핑을 타고 들어와 주세요.";
+                copyButton.style.display = "none"; // 복사 버튼 숨김
             } else {
-                // 네이버 앱이 아닐 때는 안내 메시지만 표시
-                contentElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다";
+                // 네이버 앱이 아닌 경우 기본 안내 메시지 표시
+                contentElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다.";
                 copyButton.style.display = "none"; // 복사 버튼 숨김
             }
         }
