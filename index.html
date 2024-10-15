@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>접속 확인</title>
     <script>
-        // 네이버 앱의 User-Agent와 아이폰 감지 함수
+        // 네이버 앱과 아이폰 감지 함수
         function checkDeviceAndApp() {
             const userAgent = navigator.userAgent;
+            console.log("User-Agent:", userAgent); // 디버깅용 콘솔 출력
+
             const isIphone = /iPhone|iPad|iPod/i.test(userAgent); // 아이폰 감지
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
             const contentElement = document.getElementById('content');
@@ -23,7 +25,7 @@
                 // 네이버 앱 + 올바른 링크일 때 번호 표시
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
-                messageElement.textContent = "84151234123";
+                messageElement.textContent = "84151";
                 contentElement.appendChild(messageElement);
 
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
