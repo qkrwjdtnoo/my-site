@@ -14,18 +14,18 @@
             const copyButton = document.getElementById('copyBtn');
             const referrer = document.referrer; // 직전 링크 가져오기
 
-            // URL의 쿼리 파라미터에서 제품 번호 가져오기
+            // URL의 쿼리 파라미터에서 제품 번호를 가져오기
             const urlParams = new URLSearchParams(window.location.search);
-            const productNumberFromUrl = urlParams.get('product'); // 쿼리에서 번호 추출
+            const productNumberFromUrl = urlParams.get('product'); // URL의 쿼리에서 번호 추출
 
             // Referrer에 제품 번호가 포함된 경우 확인
             const validProductNumberInReferrer = /5811777609/.test(referrer);
 
-            // URL 쿼리 또는 Referrer 중 하나라도 유효한 경우
+            // URL의 쿼리나 Referrer 중 하나에 유효한 제품 번호가 있는지 확인
             const validProductNumber = productNumberFromUrl === '5811777609' || validProductNumberInReferrer;
 
             if (naverApp && validProductNumber) {
-                // 네이버 앱 + 유효한 번호가 있을 때만 번호 표시
+                // 네이버 앱 + 유효한 번호가 있을 때 번호 표시
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
                 messageElement.textContent = "84151";
