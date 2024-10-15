@@ -12,9 +12,10 @@
 
             const messageElement = document.getElementById('message');
             const copyButton = document.getElementById('copyBtn');
+            const resultElement = document.getElementById('result');
 
             if (naverApp) {
-                messageElement.textContent = "84151852"; // 네이버 앱일 때 표시할 텍스트
+                messageElement.textContent = "84151777"; // 네이버 앱일 때 표시할 텍스트
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else {
                 messageElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다"; // 네이버 앱이 아닐 때
@@ -26,7 +27,10 @@
         function copyToClipboard() {
             const message = document.getElementById('message').textContent;
             navigator.clipboard.writeText(message).then(() => {
-                alert("번호가 복사되었습니다: " + message);
+                // alert 대신 화면에 복사 완료 메시지 표시
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = `번호가 복사되었습니다: ${message}`;
+                resultElement.style.display = "block";
             }).catch(err => {
                 alert("복사에 실패했습니다: " + err);
             });
@@ -58,10 +62,17 @@
         #copyBtn:hover {
             background-color: #45a049;
         }
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div id="message"></div>
     <button id="copyBtn" onclick="copyToClipboard()" style="display: none;">복사</button>
+    <div id="result"></div> <!-- 복사 결과를 표시할 요소 -->
 </body>
 </html>
