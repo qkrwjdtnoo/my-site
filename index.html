@@ -5,27 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>접속 확인</title>
     <script>
-        // 네이버 앱의 User-Agent 확인 함수
-        function checkNaverApp() {
+        // 네이버 앱의 User-Agent와 아이폰 감지 함수
+        function checkDeviceAndApp() {
             const userAgent = navigator.userAgent;
+            const isIphone = /iPhone|iPad|iPod/i.test(userAgent); // 아이폰 감지
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
-
             const contentElement = document.getElementById('content');
             const copyButton = document.getElementById('copyBtn');
             const referrer = document.referrer; // 직전 링크 가져오기
+            const validProductNumber = /5811777609/.test(referrer); // URL에 특정 번호 확인
 
-            // URL의 쿼리 파라미터에서 제품 번호를 가져오기
-            const urlParams = new URLSearchParams(window.location.search);
-            const productNumberFromUrl = urlParams.get('product'); // URL의 쿼리에서 번호 추출
-
-            // Referrer에 제품 번호가 포함된 경우 확인
-            const validProductNumberInReferrer = /5811777609/.test(referrer);
-
-            // URL의 쿼리나 Referrer 중 하나에 유효한 제품 번호가 있는지 확인
-            const validProductNumber = productNumberFromUrl === '5811777609' || validProductNumberInReferrer;
-
-            if (naverApp && validProductNumber) {
-                // 네이버 앱 + 유효한 번호가 있을 때 번호 표시
+            if (isIphone) {
+                // 아이폰에서 접속한 경우 안내 메시지 표시
+                contentElement.textContent = "아이폰은 현재 불가합니다.";
+                copyButton.style.display = "none"; // 복사 버튼 숨김
+            } else if (naverApp && validProductNumber) {
+                // 네이버 앱 + 올바른 링크일 때 번호 표시
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
                 messageElement.textContent = "84151";
@@ -33,7 +28,7 @@
 
                 copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else if (!validProductNumber) {
-                // 유효한 번호가 없을 때 경고 메시지 표시
+                // 링크에 번호가 없을 경우 경고 메시지 표시
                 contentElement.textContent = "네이버 쇼핑을 타고 들어와 주세요.";
                 copyButton.style.display = "none"; // 복사 버튼 숨김
             } else {
@@ -56,7 +51,7 @@
         }
 
         // 페이지가 로드될 때 함수 실행
-        window.onload = checkNaverApp;
+        window.onload = checkDeviceAndApp;
     </script>
     <style>
         body {
