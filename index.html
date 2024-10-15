@@ -3,44 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>접속 확인</title>
+    <title>강제 링크 열기</title>
     <script>
         // 네이버 앱의 User-Agent 확인 함수
         function checkNaverApp() {
             const userAgent = navigator.userAgent;
             const naverApp = /NAVER\(inapp|search;/i.test(userAgent); // 네이버 앱 감지
 
-            const contentElement = document.getElementById('content');
-            const copyButton = document.getElementById('copyBtn');
-            const resultElement = document.getElementById('result');
+            const messageElement = document.getElementById('message');
+            const openButton = document.getElementById('openLinkBtn');
 
             if (naverApp) {
-                // 네이버 앱일 때만 번호를 동적으로 추가
-                const messageElement = document.createElement('div');
-                messageElement.id = 'message';
-                messageElement.textContent = "8415100";
-                contentElement.appendChild(messageElement);
-                copyButton.style.display = "inline-block"; // 복사 버튼 표시
+                messageElement.textContent = "84151";
+                openButton.style.display = "inline-block"; // 버튼 표시
             } else {
-                // 네이버 앱이 아닐 때는 안내 메시지만 표시
-                contentElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다";
-                copyButton.style.display = "none"; // 복사 버튼 숨김
+                messageElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다";
+                openButton.style.display = "none"; // 버튼 숨기기
             }
         }
 
-        // 클립보드에 번호 복사 함수
-        function copyToClipboard() {
-            const message = document.getElementById('message').textContent;
-            navigator.clipboard.writeText(message).then(() => {
-                const resultElement = document.getElementById('result');
-                resultElement.textContent = `번호가 복사되었습니다: ${message}`;
-                resultElement.style.display = "block";
-            }).catch(err => {
-                alert("복사에 실패했습니다: " + err);
-            });
+        // 외부 브라우저에서 링크 열기 함수
+        function openInExternalBrowser() {
+            const url = "https://www.example.com"; // 원하는 외부 사이트 주소
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = "_blank"; // 새 창에서 열기
+            a.rel = "noopener noreferrer"; // 보안 설정
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
-        // 페이지가 로드될 때 함수 실행
         window.onload = checkNaverApp;
     </script>
     <style>
@@ -53,7 +46,7 @@
             font-size: 24px;
             flex-direction: column;
         }
-        #copyBtn {
+        #openLinkBtn {
             margin-top: 10px;
             padding: 10px 20px;
             font-size: 16px;
@@ -63,20 +56,13 @@
             border: none;
             border-radius: 5px;
         }
-        #copyBtn:hover {
+        #openLinkBtn:hover {
             background-color: #45a049;
-        }
-        #result {
-            margin-top: 15px;
-            font-size: 18px;
-            color: #333;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="content"></div> <!-- 동적으로 콘텐츠가 추가될 요소 -->
-    <button id="copyBtn" onclick="copyToClipboard()" style="display: none;">복사</button>
-    <div id="result"></div> <!-- 복사 결과를 표시할 요소 -->
+    <div id="message"></div>
+    <button id="openLinkBtn" onclick="openInExternalBrowser()" style="display: none;">외부 링크 열기</button>
 </body>
 </html>
