@@ -26,9 +26,9 @@
         function copyToClipboard() {
             const message = document.getElementById('message').textContent;
             navigator.clipboard.writeText(message).then(() => {
-                alert("번호가 복사되었습니다: " + message);
+                alert(`번호가 복사되었습니다: ${message}`); // 복사 성공 메시지
             }).catch(err => {
-                alert("복사에 실패했습니다: " + err);
+                alert("복사에 실패했습니다: " + err); // 복사 실패 메시지
             });
         }
 
