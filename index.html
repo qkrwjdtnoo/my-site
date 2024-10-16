@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>접속 확인</title>
     <script>
-        // Base64 암호화 함수
-        function encryptMessage(message) {
-            return btoa(message); // 문자열을 Base64로 인코딩
-        }
+        let secretNumber = ""; // 번호를 변수에 저장해 DOM에 노출되지 않게 함
 
-        // 네이버 앱과 아이폰 감지 함수
         function checkDeviceAndApp() {
             const userAgent = navigator.userAgent;
             console.log("User-Agent:", userAgent); // 디버깅용 콘솔 출력
@@ -29,36 +25,29 @@
                 contentElement.textContent = "아이폰은 현재 불가합니다.";
                 copyButton.style.display = "none";
             } else if (validProductNumber) {
-                const message = "84151"; // 원본 메시지
-                const encryptedMessage = encryptMessage(message); // 암호화된 메시지
-
-                console.log("Encrypted Message:", encryptedMessage); // 암호화된 메시지를 콘솔에 출력
-
-                const messageElement = document.createElement('div');
-                messageElement.id = 'message';
-                messageElement.textContent = message; // 원본 메시지를 화면에 표시
-                contentElement.appendChild(messageElement);
-
-                copyButton.style.display = "inline-block";
+                // 번호를 변수에 저장하고 필요한 경우에만 표시
+                secretNumber = "84151";
+                copyButton.style.display = "inline-block"; // 복사 버튼 표시
             } else {
                 contentElement.textContent = "네이버 쇼핑을 타고 들어와 주세요.";
                 copyButton.style.display = "none";
             }
         }
 
-        // 클립보드에 번호 복사 함수
         function copyToClipboard() {
-            const message = document.getElementById('message').textContent;
-            navigator.clipboard.writeText(message).then(() => {
-                const resultElement = document.getElementById('result');
-                resultElement.textContent = `번호가 복사되었습니다: ${message}`;
-                resultElement.style.display = "block";
-            }).catch(err => {
-                alert("복사에 실패했습니다: " + err);
-            });
+            if (secretNumber) {
+                navigator.clipboard.writeText(secretNumber).then(() => {
+                    const resultElement = document.getElementById('result');
+                    resultElement.textContent = `번호가 복사되었습니다: ${secretNumber}`;
+                    resultElement.style.display = "block";
+                }).catch(err => {
+                    alert("복사에 실패했습니다: " + err);
+                });
+            } else {
+                alert("복사할 번호가 없습니다.");
+            }
         }
 
-        // 페이지가 로드될 때 함수 실행
         window.onload = checkDeviceAndApp;
     </script>
     <style>
