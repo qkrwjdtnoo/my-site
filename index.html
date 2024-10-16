@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>접속 확인</title>
     <script>
+        // Base64 암호화 함수
+        function encryptMessage(message) {
+            return btoa(message); // 문자열을 Base64로 인코딩
+        }
+
         // 네이버 앱과 아이폰 감지 함수
         function checkDeviceAndApp() {
             const userAgent = navigator.userAgent;
@@ -18,25 +23,26 @@
             const validProductNumber = /5811777609/.test(referrer); // URL에 특정 번호 확인
 
             if (!naverApp) {
-                // 네이버 앱이 아닐 때 먼저 메시지 표시
                 contentElement.textContent = "네이버 앱 접속시에만 확인이 가능합니다.";
-                copyButton.style.display = "none"; // 복사 버튼 숨김
+                copyButton.style.display = "none";
             } else if (isIphone) {
-                // 네이버 앱 + 아이폰일 때 안내 메시지 표시
                 contentElement.textContent = "아이폰은 현재 불가합니다.";
-                copyButton.style.display = "none"; // 복사 버튼 숨김
+                copyButton.style.display = "none";
             } else if (validProductNumber) {
-                // 네이버 앱 + 올바른 링크일 때 번호 표시
+                const message = "84151"; // 원본 메시지
+                const encryptedMessage = encryptMessage(message); // 암호화된 메시지
+
+                console.log("Encrypted Message:", encryptedMessage); // 암호화된 메시지를 콘솔에 출력
+
                 const messageElement = document.createElement('div');
                 messageElement.id = 'message';
-                messageElement.textContent = "84151";
+                messageElement.textContent = message; // 원본 메시지를 화면에 표시
                 contentElement.appendChild(messageElement);
 
-                copyButton.style.display = "inline-block"; // 복사 버튼 표시
+                copyButton.style.display = "inline-block";
             } else {
-                // 링크에 번호가 없을 경우 경고 메시지 표시
                 contentElement.textContent = "네이버 쇼핑을 타고 들어와 주세요.";
-                copyButton.style.display = "none"; // 복사 버튼 숨김
+                copyButton.style.display = "none";
             }
         }
 
